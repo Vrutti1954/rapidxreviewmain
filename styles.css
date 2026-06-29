@@ -57,7 +57,6 @@ body {
   justify-content: space-between;
   padding: 0 5%;
   height: var(--nav-height);
-  /* Transparent on hero, fills in on scroll */
   background: transparent;
   border-bottom: 1px solid transparent;
   transition: background 0.6s ease, border-color 0.6s ease,
@@ -65,7 +64,6 @@ body {
   overflow: visible;
 }
 
-/* Scrolled state — nav gets the dark glass look */
 .nav.scrolled {
   background: rgba(9, 9, 11, 0.88);
   backdrop-filter: blur(20px);
@@ -73,22 +71,18 @@ body {
   border-color: var(--border);
 }
 
-/* Logo wrapper — always flex-centered inside nav */
 .nav-logo {
   display: flex;
   align-items: center;
   text-decoration: none;
-  /* Allow logo to overflow below nav bar on hero */
   overflow: visible;
   position: relative;
   z-index: 201;
 }
 
-/* The actual logo image */
 #logoImg {
   width: auto;
-  height: var(--logo-size-hero);       /* Big on hero */
-  /* Nudge it down so it peeks below the nav bar */
+  height: var(--logo-size-hero);
   transform: translateY(40px);
   transform-origin: top left;
   transition: height 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
@@ -96,13 +90,11 @@ body {
   display: block;
 }
 
-/* Scrolled: logo shrinks and sits flush inside nav */
 .nav.scrolled #logoImg {
   height: var(--logo-size-scrolled);
   transform: translateY(0);
 }
 
-/* Nav scrolled — hero top padding stays consistent */
 .hero {
   padding-top: calc(var(--nav-height) + 60px);
 }
@@ -519,7 +511,10 @@ body {
   justify-content: center;
 }
 
-/* FEATURES */
+/* =====================================================
+   FEATURES — same hover effect as about-card
+   ===================================================== */
+
 .feat-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -531,32 +526,34 @@ body {
   border: 1px solid var(--border);
   border-radius: var(--r);
   padding: 1.75rem;
-  transition: border-color 0.25s, transform 0.25s;
   position: relative;
   overflow: hidden;
+  transition: border-color 0.3s, transform 0.3s ease-out, box-shadow 0.3s, background 0.3s;
 }
 
-.feat-card::after {
+/* Blue line slides in from left on hover — matches about-card */
+.feat-card::before {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  height: 1px;
-  background: linear-gradient(to right, transparent, var(--sky), transparent);
-  opacity: 0;
-  transition: opacity 0.25s;
+  height: 2px;
+  background: var(--sky);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease-out;
+}
+
+.feat-card:hover::before {
+  transform: scaleX(1);
 }
 
 .feat-card:hover {
   border-color: var(--sky-border);
-  transform: translateY(-6px) scale(1.04);
+  transform: translateY(-6px) scale(1.02);
   box-shadow: 0 8px 24px rgba(56, 189, 248, 0.25);
   background: var(--bg4);
-}
-
-.feat-card:hover::after {
-  opacity: 1;
 }
 
 .feat-ico {
@@ -676,7 +673,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 0.625rem;
-  margin-bottom: 1.75rem;
+  margin-bottom: 1.25rem;
 }
 
 .p-list li {
@@ -702,6 +699,61 @@ body {
 .p-list li.off .p-check {
   color: var(--text3);
   opacity: 0.4;
+}
+
+/* SHOW MORE DROPDOWN */
+.p-showmore {
+  margin-bottom: 1.25rem;
+}
+
+.p-showmore-btn {
+  background: none;
+  border: none;
+  color: var(--sky);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  font-family: inherit;
+  letter-spacing: 0.01em;
+  transition: opacity 0.2s;
+}
+
+.p-showmore-btn:hover {
+  opacity: 0.75;
+}
+
+.p-showmore-content {
+  display: none;
+  margin-top: 0.625rem;
+  padding: 0.75rem 1rem;
+  background: var(--sky-dim);
+  border: 1px solid var(--sky-border);
+  border-radius: var(--r-sm);
+}
+
+.p-showmore-content.open {
+  display: block;
+}
+
+.p-onboarding-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.p-onboarding-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.p-onboarding-price {
+  font-size: 0.8rem;
+  color: var(--sky);
+  font-weight: 700;
+  white-space: nowrap;
 }
 
 .p-btn {
@@ -745,7 +797,7 @@ body {
 
 .addons-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
   margin-top: 1rem;
 }
@@ -1208,7 +1260,6 @@ footer {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.25rem;
-  margin-bottom: 1.25rem;
 }
 
 .about-card {
@@ -1221,7 +1272,6 @@ footer {
   transition: border-color 0.3s, transform 0.3s ease-out, box-shadow 0.3s, background 0.3s;
 }
 
-/* Blue line slides in from left on hover */
 .about-card::before {
   content: '';
   position: absolute;
@@ -1272,73 +1322,9 @@ footer {
   line-height: 1.75;
 }
 
-/* VALUES ROW */
-.about-values {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.25rem;
-}
-
-.about-value {
-  background: var(--bg3);
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  padding: 1.75rem;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-  transition: border-color 0.3s, transform 0.3s ease-out,
-              box-shadow 0.3s, background 0.3s;
-}
-
-.about-value::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: var(--sky);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.3s ease-out;
-}
-
-.about-value:hover::before {
-  transform: scaleX(1);
-}
-
-.about-value:hover {
-  border-color: var(--sky-border);
-  transform: translateY(-6px) scale(1.03);
-  box-shadow: 0 8px 24px rgba(56, 189, 248, 0.25);
-  background: var(--bg4);
-}
-
-.about-value-ico {
-  font-size: 2rem;
-  margin-bottom: 0.875rem;
-}
-
-.about-value-title {
-  font-size: 0.95rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-  letter-spacing: -0.01em;
-}
-
-.about-value p {
-  color: var(--text2);
-  font-size: 0.85rem;
-  line-height: 1.7;
-}
-
 /* ABOUT RESPONSIVE */
 @media (max-width: 768px) {
   .about-grid {
-    grid-template-columns: 1fr;
-  }
-  .about-values {
     grid-template-columns: 1fr;
   }
 }
